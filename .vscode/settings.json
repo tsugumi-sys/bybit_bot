@@ -1,0 +1,14 @@
+{
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": [
+        "--ignore=E722,E501,E402,E203"
+    ],
+    "python.linting.enabled": true,
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length",
+        "150"
+    ],
+    "editor.formatOnSave": true,
+    "python.analysis.typeCheckingMode": "off"
+}

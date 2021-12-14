@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "bybit_bot"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.7.1,<3.10"
+scipy = "^1.7.1"
+pandas = "^1.3.3"
+matplotlib = "^3.4.3"
+jupyterlab = "^3.1.17"
+scikit-learn = "^1.0"
+seaborn = "^0.11.2"
+mlflow = "^1.20.2"
+tensorflow = "2.6.1"
+python-dotenv = "^0.19.2"
+lightgbm = "^3.3.1"
+numba = "^0.54.1"
+pybit = "^1.3.2"
+fastapi = "^0.70.1"
+uvicorn = {extras = ["standard"], version = "^0.16.0"}
+Jinja2 = "^3.0.3"
+
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.9.2"
+black = {version = "21.7b0", allow-prereleases = true}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
