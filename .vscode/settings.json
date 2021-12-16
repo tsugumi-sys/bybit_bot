@@ -10,5 +10,5 @@
         "150"
     ],
     "editor.formatOnSave": true,
-    "python.analysis.typeCheckingMode": "off"
+    "python.analysis.typeCheckingMode": "basic"
 }
