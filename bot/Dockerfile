@@ -13,7 +13,7 @@ RUN apt-get -y update && \
     pip install --no-cache-dir -r requirements.txt
 
 COPY src/ /app/src/
-
+COPY .env /app/.env
 COPY run.sh /app/run.sh
 RUN chmod +x /app/run.sh
 CMD ["./run.sh"]

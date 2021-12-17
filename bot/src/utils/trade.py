@@ -18,16 +18,18 @@ class Trade:
     def symbols_list(self) -> List[str]:
         res: Any = self.session.query_symbol()
         symbols = [s["name"] for s in res["result"] if "name" in s]
+        symbols = [s for s in symbols if "USDT" in s]
         return symbols
 
     # Get Leverage
     # if isIsolated is True, Isolated Margin is used.
-    def set_leverage(self, symbol: str, buy_leverage: float, sell_leverage: float) -> Union[Dict, str]:
+    def set_leverage(self, symbol: str, buy_leverage: int, sell_leverage: int) -> Union[Dict, str]:
         if symbol.upper() not in self.symbols_list():
             raise ValueError(f"Invalid symbol {symbol} for Bybit USDT Perpetual.")
 
         if buy_leverage < 0 or sell_leverage < 0:
             raise ValueError(f"Invalid leverage value ['{buy_leverage}', '{sell_leverage}'. Leverage should be more than 0.")
+
         try:
             res: Any = self.session.set_leverage(
                 symbol=symbol.upper(),
@@ -64,11 +66,13 @@ class Trade:
             else:
                 return position_list
         except FailedRequestError as e:
-            logger.error(e.message)
-            return e.message
+            err_msg = f"FailedRequestError: {e.message} (Trade.{self.my_position_amount.__name__})"
+            logger.error(err_msg)
+            return err_msg
         except InvalidRequestError as e:
-            logger.error(e.message)
-            return e.message
+            err_msg = f"InvalidRequestError: {e.message} (Trade.{self.my_position_amount.__name__})"
+            logger.error(err_msg)
+            return err_msg
 
     # To check my current position list.
     # If you have position, sell or buy with reduce only to close your posison.
@@ -90,11 +94,13 @@ class Trade:
             else:
                 return position_list
         except FailedRequestError as e:
-            logger.error(e.message)
-            return e.message
+            err_msg = f"FailedRequestError: {e.message} (Trade.{self.my_position_leverage.__name__})"
+            logger.error(err_msg)
+            return err_msg
         except InvalidRequestError as e:
-            logger.error(e.message)
-            return e.message
+            err_msg = f"InvalidRequestError: {e.message} (Trade.{self.my_position_leverage.__name__})"
+            logger.error(err_msg)
+            return err_msg
 
     # Create limit order for a new long or short position.
     def create_limit_order(
@@ -128,11 +134,13 @@ class Trade:
 
             return res
         except FailedRequestError as e:
-            logger.error(e.message)
-            return e.message
+            err_msg = f"FailedRequestError: {e.message} (Trade.{self.create_limit_order.__name__})"
+            logger.error(err_msg)
+            return err_msg
         except InvalidRequestError as e:
-            logger.error(e.message)
-            return e.message
+            err_msg = f"InvalidRequestError: {e.message} (Trade.{self.create_limit_order.__name__})"
+            logger.error(err_msg)
+            return err_msg
 
     # Create limit order for a new long or short position.
     def close_limit_order(
@@ -164,8 +172,27 @@ class Trade:
 
             return res
         except FailedRequestError as e:
-            logger.error(e.message)
-            return e.message
+            err_msg = f"FailedRequestError: {e.message} (Trade.{self.close_limit_order.__name__})"
+            logger.error(err_msg)
+            return err_msg
         except InvalidRequestError as e:
-            logger.error(e.message)
-            return e.message
+            err_msg = f"InvalidRequestError: {e.message} (Trade.{self.close_limit_order.__name__})"
+            logger.error(err_msg)
+            return err_msg
+
+    # Cancel all active orders
+    def cancel_all_active_orders(self, symbol: str) -> Union[Dict, str]:
+        if symbol.upper() not in self.symbols_list():
+            raise ValueError(f"Invalid symbol {symbol} for Bybit USDT Perpetual.")
+
+        try:
+            res = self.session.cancel_all_active_orders(symbol=symbol.upper())
+            return res
+        except FailedRequestError as e:
+            err_msg = f"FailedRequestError: {e.message} (Trade.{self.cancel_all_active_orders.__name__})"
+            logger.error(err_msg)
+            return err_msg
+        except InvalidRequestError as e:
+            err_msg = f"InvalidRequestError: {e.message} (Trade.{self.cancel_all_active_orders.__name__})"
+            logger.error(err_msg)
+            return err_msg
